@@ -3,7 +3,7 @@
 Welcome to my solutions to Advent of Code 2022! This year, I have (again) chosen to go with Go. Some resons why:
 
 - The problems usually present really good test cases. Go has nice testing out-of-the-box.
-- Some cases really lend themselves to "table structured" testing. This is easily represented in Go.
+- Some cases really lend themselves to "table-driven" testing. This is easily represented in Go.
 - Go gives us a lot with just the standard library.
 
 ## General structure
