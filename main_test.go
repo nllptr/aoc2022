@@ -7,7 +7,7 @@ import (
 	"github.com/nllptr/aoc2022/day2"
 )
 
-// These tests are mainly to make sure refactorings do not break the final output.
+// These tests are mainly to make sure refactorings do not introduce any regressions.
 func TestAll(t *testing.T) {
 	day1_1, day1_2 := day1.Run("day1/input.txt")
 	if day1_1 != 70720 {

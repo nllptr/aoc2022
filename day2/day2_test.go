@@ -6,25 +6,25 @@ import (
 	"github.com/stretchr/testify/assert"
 )
 
-func TestParse1Input(t *testing.T) {
+func TestParseAsChoicepairInput(t *testing.T) {
 	input := []byte("A Y\nB X\nC Z")
-	expected := []choicePair{
-		{ROCK, PAPER},
-		{PAPER, ROCK},
-		{SCISSORS, SCISSORS},
+	expected := []scorable{
+		choicePair{ROCK, PAPER},
+		choicePair{PAPER, ROCK},
+		choicePair{SCISSORS, SCISSORS},
 	}
 
-	parsed := parse1(input)
+	parsed := parse(input, asChoicePair)
 	assert.Equal(t, expected, parsed, "parsed does not contain all expected values")
 }
-func TestParse2Input(t *testing.T) {
+func TestParseAsCombinationInput(t *testing.T) {
 	input := []byte("A Y\nB X\nC Z")
-	expected := []combination{
-		{ROCK, DRAW},
-		{PAPER, LOSS},
-		{SCISSORS, WIN},
+	expected := []scorable{
+		combination{ROCK, DRAW},
+		combination{PAPER, LOSS},
+		combination{SCISSORS, WIN},
 	}
-	parsed := parse2(input)
+	parsed := parse(input, asCombination)
 	assert.Equal(t, expected, parsed, "parsed does not contain all expected values")
 }
 
@@ -38,7 +38,7 @@ func TestGetScore(t *testing.T) {
 		{choicePair{SCISSORS, SCISSORS}, 6},
 	}
 	for _, c := range cases {
-		score := getScore(c.input)
+		score := c.input.score()
 		if score != c.expected {
 			t.Error("test failed. expected", c.expected, "but got", score)
 			t.Fail()
@@ -47,13 +47,13 @@ func TestGetScore(t *testing.T) {
 }
 
 func TestGetTotalScore1(t *testing.T) {
-	input := []choicePair{
-		{ROCK, PAPER},
-		{PAPER, ROCK},
-		{SCISSORS, SCISSORS},
+	input := []scorable{
+		choicePair{ROCK, PAPER},
+		choicePair{PAPER, ROCK},
+		choicePair{SCISSORS, SCISSORS},
 	}
 	expected := 15
-	score := getTotalScore1(input)
+	score := getTotalScore(input)
 	if score != expected {
 		t.Error("test failed. expected", expected, "but got", score)
 		t.Fail()
@@ -79,13 +79,13 @@ func TestGetMatch(t *testing.T) {
 }
 
 func TestGetTotalScore2(t *testing.T) {
-	input := []combination{
-		{ROCK, DRAW},
-		{PAPER, LOSS},
-		{SCISSORS, WIN},
+	input := []scorable{
+		combination{ROCK, DRAW},
+		combination{PAPER, LOSS},
+		combination{SCISSORS, WIN},
 	}
 	expected := 12
-	score := getTotalScore2(input)
+	score := getTotalScore(input)
 	if score != expected {
 		t.Error("test failed. expected", expected, "but got", score)
 		t.Fail()

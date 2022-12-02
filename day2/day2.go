@@ -9,16 +9,25 @@ import (
 
 func Run(filename string) (int, int) {
 	input := util.ReadFile(filename)
-	parsed1 := parse1(input)
-	totalScore := getTotalScore1(parsed1)
-	parsed2 := parse2(input)
-	totalScore2 := getTotalScore2(parsed2)
+	parsed1 := parse(input, asChoicePair)
+	totalScore := getTotalScore(parsed1)
+	parsed2 := parse(input, asCombination)
+	totalScore2 := getTotalScore(parsed2)
 	return totalScore, totalScore2
+}
+
+type scorable interface {
+	score() int
 }
 
 type choicePair struct {
 	opponent choice
 	you      choice
+}
+
+func (c choicePair) score() int {
+	outcome := getOutcome(c.opponent, c.you)
+	return int(c.you) + int(outcome)
 }
 
 type choice int
@@ -34,6 +43,10 @@ type combination struct {
 	outcome outcome
 }
 
+func (c combination) score() int {
+	return int(getMatch(c)) + int(c.outcome)
+}
+
 type outcome int
 
 const (
@@ -42,28 +55,24 @@ const (
 	WIN  outcome = 6
 )
 
-func parse1(input []byte) []choicePair {
+func parse(input []byte, parseFunc func([]string) scorable) []scorable {
 	asString := string(input)
 	rows := strings.Split(asString, "\n")
-	parsed := []choicePair{}
+	parsed := []scorable{}
 	for _, row := range rows {
 		columns := strings.Split(row, " ")
-		combination := choicePair{asChoice(columns[0]), asChoice(columns[1])}
+		combination := parseFunc(columns)
 		parsed = append(parsed, combination)
 	}
 	return parsed
 }
 
-func parse2(input []byte) []combination {
-	asString := string(input)
-	rows := strings.Split(asString, "\n")
-	parsed := []combination{}
-	for _, row := range rows {
-		columns := strings.Split(row, " ")
-		combination := combination{asChoice(columns[0]), asOutcome(columns[1])}
-		parsed = append(parsed, combination)
-	}
-	return parsed
+func asChoicePair(input []string) scorable {
+	return choicePair{asChoice(input[0]), asChoice(input[1])}
+}
+
+func asCombination(input []string) scorable {
+	return combination{asChoice(input[0]), asOutcome(input[1])}
 }
 
 func asChoice(input string) choice {
@@ -100,11 +109,6 @@ func asOutcome(input string) outcome {
 	return asOutcome
 }
 
-func getScore(c choicePair) int {
-	outcome := getOutcome(c.opponent, c.you)
-	return int(c.you) + int(outcome)
-}
-
 func getOutcome(opponent, you choice) outcome {
 	if (opponent == ROCK && you == PAPER) || (opponent == PAPER && you == SCISSORS) || (opponent == SCISSORS && you == ROCK) {
 		return WIN
@@ -115,10 +119,10 @@ func getOutcome(opponent, you choice) outcome {
 	return DRAW
 }
 
-func getTotalScore1(input []choicePair) int {
+func getTotalScore(combinations []scorable) int {
 	score := 0
-	for _, combination := range input {
-		score = score + getScore(combination)
+	for _, combination := range combinations {
+		score = score + combination.score()
 	}
 	return score
 }
@@ -158,16 +162,4 @@ func getLoserFor(c choice) choice {
 		loser = PAPER
 	}
 	return loser
-}
-
-func getTotalScore2(combinations []combination) int {
-	score := 0
-	for _, combination := range combinations {
-		score = score + getCombinationScore(combination)
-	}
-	return score
-}
-
-func getCombinationScore(c combination) int {
-	return int(getMatch(c)) + int(choice(c.outcome))
 }
