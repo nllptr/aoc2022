@@ -1,7 +1,6 @@
 package day1
 
 import (
-	"fmt"
 	"log"
 	"sort"
 	"strconv"
@@ -10,13 +9,12 @@ import (
 	"github.com/nllptr/aoc2022/util"
 )
 
-func Run(filename string) {
+func Run(filename string) (int, int) {
 	input := util.ReadFile(filename)
 	parsed := parse(input)
 	max := max(parsed)
-	fmt.Println("day 1, part 1:", max)
 	maxThree := maxThree(parsed)
-	fmt.Println("day 1, part 2:", maxThree)
+	return max, maxThree
 }
 
 func parse(input []byte) [][]int {
