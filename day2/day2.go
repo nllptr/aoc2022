@@ -16,6 +16,11 @@ func Run(filename string) (int, int) {
 	return totalScore, totalScore2
 }
 
+type choicePair struct {
+	opponent choice
+	you      choice
+}
+
 type choice int
 
 const (
@@ -37,13 +42,13 @@ const (
 	WIN  outcome = 6
 )
 
-func parse1(input []byte) [][]choice {
+func parse1(input []byte) []choicePair {
 	asString := string(input)
 	rows := strings.Split(asString, "\n")
-	parsed := [][]choice{}
+	parsed := []choicePair{}
 	for _, row := range rows {
 		columns := strings.Split(row, " ")
-		combination := []choice{asChoice(columns[0]), asChoice(columns[1])}
+		combination := choicePair{asChoice(columns[0]), asChoice(columns[1])}
 		parsed = append(parsed, combination)
 	}
 	return parsed
@@ -95,11 +100,9 @@ func asOutcome(input string) outcome {
 	return asOutcome
 }
 
-func getScore(combination []choice) int {
-	opponent := combination[0]
-	you := combination[1]
-	outcome := getOutcome(opponent, you)
-	return int(you) + int(outcome)
+func getScore(c choicePair) int {
+	outcome := getOutcome(c.opponent, c.you)
+	return int(c.you) + int(outcome)
 }
 
 func getOutcome(opponent, you choice) outcome {
@@ -112,7 +115,7 @@ func getOutcome(opponent, you choice) outcome {
 	return DRAW
 }
 
-func getTotalScore1(input [][]choice) int {
+func getTotalScore1(input []choicePair) int {
 	score := 0
 	for _, combination := range input {
 		score = score + getScore(combination)

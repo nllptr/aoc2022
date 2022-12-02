@@ -8,7 +8,7 @@ import (
 
 func TestParse1Input(t *testing.T) {
 	input := []byte("A Y\nB X\nC Z")
-	expected := [][]choice{
+	expected := []choicePair{
 		{ROCK, PAPER},
 		{PAPER, ROCK},
 		{SCISSORS, SCISSORS},
@@ -30,12 +30,12 @@ func TestParse2Input(t *testing.T) {
 
 func TestGetScore(t *testing.T) {
 	cases := []struct {
-		input    []choice
+		input    choicePair
 		expected int
 	}{
-		{[]choice{ROCK, PAPER}, 8},
-		{[]choice{PAPER, ROCK}, 1},
-		{[]choice{SCISSORS, SCISSORS}, 6},
+		{choicePair{ROCK, PAPER}, 8},
+		{choicePair{PAPER, ROCK}, 1},
+		{choicePair{SCISSORS, SCISSORS}, 6},
 	}
 	for _, c := range cases {
 		score := getScore(c.input)
@@ -47,7 +47,7 @@ func TestGetScore(t *testing.T) {
 }
 
 func TestGetTotalScore1(t *testing.T) {
-	input := [][]choice{
+	input := []choicePair{
 		{ROCK, PAPER},
 		{PAPER, ROCK},
 		{SCISSORS, SCISSORS},
