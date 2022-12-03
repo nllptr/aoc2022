@@ -1,3 +1,5 @@
+[![Go](https://github.com/nllptr/aoc2022/actions/workflows/go.yml/badge.svg)](https://github.com/nllptr/aoc2022/actions/workflows/go.yml)
+
 # aoc2022
 
 Welcome to my solutions to Advent of Code 2022! This year, I have (again) chosen to go with Go. Some resons why:
