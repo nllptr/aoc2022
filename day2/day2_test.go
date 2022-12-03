@@ -14,7 +14,7 @@ func TestParseAsChoicepairInput(t *testing.T) {
 		choicePair{SCISSORS, SCISSORS},
 	}
 
-	parsed := parse(input, asChoicePair)
+	parsed := Parse(input, asChoicePair)
 	assert.Equal(t, expected, parsed, "parsed does not contain all expected values")
 }
 func TestParseAsCombinationInput(t *testing.T) {
@@ -24,7 +24,7 @@ func TestParseAsCombinationInput(t *testing.T) {
 		combination{PAPER, LOSS},
 		combination{SCISSORS, WIN},
 	}
-	parsed := parse(input, asCombination)
+	parsed := Parse(input, asCombination)
 	assert.Equal(t, expected, parsed, "parsed does not contain all expected values")
 }
 
@@ -53,7 +53,7 @@ func TestGetTotalScore1(t *testing.T) {
 		choicePair{SCISSORS, SCISSORS},
 	}
 	expected := 15
-	score := getTotalScore(input)
+	score := GetTotalScore(input)
 	if score != expected {
 		t.Error("test failed. expected", expected, "but got", score)
 		t.Fail()
@@ -85,7 +85,7 @@ func TestGetTotalScore2(t *testing.T) {
 		combination{SCISSORS, WIN},
 	}
 	expected := 12
-	score := getTotalScore(input)
+	score := GetTotalScore(input)
 	if score != expected {
 		t.Error("test failed. expected", expected, "but got", score)
 		t.Fail()

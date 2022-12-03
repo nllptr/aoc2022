@@ -11,13 +11,13 @@ import (
 
 func Run(filename string) (int, int) {
 	input := util.ReadFile(filename)
-	parsed := parse(input)
-	max := max(parsed)
-	maxThree := maxThree(parsed)
+	parsed := Parse(input)
+	max := Max(parsed)
+	maxThree := MaxThree(parsed)
 	return max, maxThree
 }
 
-func parse(input []byte) [][]int {
+func Parse(input []byte) [][]int {
 	asString := string(input)
 	stringGroups := strings.Split(asString, "\n\n")
 	parsed := [][]int{}
@@ -44,7 +44,7 @@ func sum(items []int) int {
 	return sum
 }
 
-func max(input [][]int) int {
+func Max(input [][]int) int {
 	max := 0
 	for _, item := range input {
 		sum := sum(item)
@@ -55,7 +55,7 @@ func max(input [][]int) int {
 	return max
 }
 
-func maxThree(input [][]int) int {
+func MaxThree(input [][]int) int {
 	sums := []int{}
 	for _, item := range input {
 		sums = append(sums, sum(item))

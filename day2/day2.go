@@ -9,10 +9,10 @@ import (
 
 func Run(filename string) (int, int) {
 	input := util.ReadFile(filename)
-	parsed1 := parse(input, asChoicePair)
-	totalScore := getTotalScore(parsed1)
-	parsed2 := parse(input, asCombination)
-	totalScore2 := getTotalScore(parsed2)
+	parsed1 := Parse(input, asChoicePair)
+	totalScore := GetTotalScore(parsed1)
+	parsed2 := Parse(input, asCombination)
+	totalScore2 := GetTotalScore(parsed2)
 	return totalScore, totalScore2
 }
 
@@ -55,7 +55,7 @@ const (
 	WIN  outcome = 6
 )
 
-func parse(input []byte, parseFunc func([]string) scorable) []scorable {
+func Parse(input []byte, parseFunc func([]string) scorable) []scorable {
 	asString := string(input)
 	rows := strings.Split(asString, "\n")
 	parsed := []scorable{}
@@ -119,7 +119,7 @@ func getOutcome(opponent, you choice) outcome {
 	return DRAW
 }
 
-func getTotalScore(combinations []scorable) int {
+func GetTotalScore(combinations []scorable) int {
 	score := 0
 	for _, combination := range combinations {
 		score = score + combination.score()

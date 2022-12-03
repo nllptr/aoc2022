@@ -14,7 +14,7 @@ func TestParseAsChoicepairInput(t *testing.T) {
 		{"PmmdzqPrV", "vPwwTWBwg"},
 	}
 
-	parsed := parse(input)
+	parsed := Parse(input)
 	assert.Equal(t, expected, parsed, "parsed does not contain all expected values")
 }
 
@@ -26,8 +26,8 @@ func TestFindMispack(t *testing.T) {
 
 func TestFindMispacks(t *testing.T) {
 	input := []byte("vJrwpWtwJgWrhcsFMMfFFhFp\njqHRNqRjqzjGDLGLrsFMfFZSrLrFZsSL\nPmmdzqPrVvPwwTWBwg\nwMqvLMZHhHMvwLHjbvcjnnSBnvTQFn\nttgJtRGJQctTZtZT\nCrZsJsPPZsGzwwsLwLmpwMDw")
-	parsed := parse(input)
-	commonItems := findMispacks(parsed)
+	parsed := Parse(input)
+	commonItems := FindMispacks(parsed)
 	assert.Equal(t, "pLPvts", commonItems)
 }
 
@@ -40,7 +40,7 @@ func TestGetPriority(t *testing.T) {
 
 func TestGetPriorotySum(t *testing.T) {
 	input := "pLPvts"
-	sum := getPrioritySum(input)
+	sum := GetPrioritySum(input)
 	assert.Equal(t, 157, sum)
 }
 
@@ -53,7 +53,7 @@ func TestParseGroups(t *testing.T) {
 			{"PmmdzqPrV", "vPwwTWBwg"},
 		},
 	}
-	parsed := parseGroups(input)
+	parsed := ParseGroups(input)
 	assert.Equal(t, firstExpected, parsed[0])
 	assert.Equal(t, 2, len(parsed))
 }
@@ -90,15 +90,15 @@ func TestMapItemTypes(t *testing.T) {
 
 func TestFindBadgeType(t *testing.T) {
 	input := []byte("vJrwpWtwJgWrhcsFMMfFFhFp\njqHRNqRjqzjGDLGLrsFMfFZSrLrFZsSL\nPmmdzqPrVvPwwTWBwg\nwMqvLMZHhHMvwLHjbvcjnnSBnvTQFn\nttgJtRGJQctTZtZT\nCrZsJsPPZsGzwwsLwLmpwMDw")
-	parsed := parseGroups(input)
+	parsed := ParseGroups(input)
 	badgeTypes := findBadgeTypes(parsed)
 	assert.Equal(t, "rZ", badgeTypes)
 }
 
 func TestGetBadgePriorities(t *testing.T) {
 	input := []byte("vJrwpWtwJgWrhcsFMMfFFhFp\njqHRNqRjqzjGDLGLrsFMfFZSrLrFZsSL\nPmmdzqPrVvPwwTWBwg\nwMqvLMZHhHMvwLHjbvcjnnSBnvTQFn\nttgJtRGJQctTZtZT\nCrZsJsPPZsGzwwsLwLmpwMDw")
-	parsed := parseGroups(input)
+	parsed := ParseGroups(input)
 	badgeTypes := findBadgeTypes(parsed)
-	sum := getPrioritySum(badgeTypes)
+	sum := GetPrioritySum(badgeTypes)
 	assert.Equal(t, 70, sum)
 }

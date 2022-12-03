@@ -16,7 +16,7 @@ func TestParseInput(t *testing.T) {
 		{10000},
 	}
 
-	parsed := parse(input)
+	parsed := Parse(input)
 	assert.Equal(t, parsed, expected, "parsed does not contain all expected values")
 }
 
@@ -49,7 +49,7 @@ func TestGetMax(t *testing.T) {
 		{10000},
 	}
 	expected := 24000
-	max := max(input)
+	max := Max(input)
 	if max != expected {
 		t.Error("test failed. expected", expected, "but got", max)
 		t.Fail()
@@ -65,7 +65,7 @@ func TestGetMaxThree(t *testing.T) {
 		{10000},
 	}
 	expected := 45000
-	maxThree := maxThree(input)
+	maxThree := MaxThree(input)
 	if maxThree != expected {
 		t.Error("expected sum to be", expected, "but got", maxThree)
 		t.Fail()

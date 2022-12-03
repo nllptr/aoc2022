@@ -21,5 +21,5 @@ func TestAll(t *testing.T) {
 
 	day3_1, day3_2 := day3.Run("day3/input.txt")
 	assert.Equal(t, 8139, day3_1)
-	assert.Equal(t, 0, day3_2)
+	assert.Equal(t, 2668, day3_2)
 }

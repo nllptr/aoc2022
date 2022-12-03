@@ -10,12 +10,12 @@ import (
 
 func Run(filename string) (int, int) {
 	input := util.ReadFile(filename)
-	parsed := parse(input)
-	misPacks := findMispacks(parsed)
-	sum := getPrioritySum(misPacks)
-	parsedGroups := parseGroups(input)
+	parsed := Parse(input)
+	misPacks := FindMispacks(parsed)
+	sum := GetPrioritySum(misPacks)
+	parsedGroups := ParseGroups(input)
 	badgeTypes := findBadgeTypes(parsedGroups)
-	badgePriorities := getPrioritySum(badgeTypes)
+	badgePriorities := GetPrioritySum(badgeTypes)
 	return sum, badgePriorities
 }
 
@@ -28,7 +28,7 @@ type group struct {
 	rucksacks []rucksack
 }
 
-func parse(input []byte) []rucksack {
+func Parse(input []byte) []rucksack {
 	asString := string(input)
 	rows := strings.Split(asString, "\n")
 	parsed := []rucksack{}
@@ -58,7 +58,7 @@ func findMispack(rucksack rucksack) rune {
 	return common
 }
 
-func findMispacks(rucksacks []rucksack) string {
+func FindMispacks(rucksacks []rucksack) string {
 	var sb strings.Builder
 	for _, rucksack := range rucksacks {
 		misPack := findMispack(rucksack)
@@ -79,7 +79,7 @@ func getPriority(r rune) int {
 	return intVal
 }
 
-func getPrioritySum(misPacks string) int {
+func GetPrioritySum(misPacks string) int {
 	sum := 0
 	for _, m := range misPacks {
 		sum = sum + getPriority(m)
@@ -87,8 +87,8 @@ func getPrioritySum(misPacks string) int {
 	return sum
 }
 
-func parseGroups(input []byte) []group {
-	rucksacks := parse(input)
+func ParseGroups(input []byte) []group {
+	rucksacks := Parse(input)
 	groups := []group{}
 	parsed, _ := appendGroup(groups, rucksacks)
 	return parsed
