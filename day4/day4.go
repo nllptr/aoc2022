@@ -4,13 +4,17 @@ import (
 	"log"
 	"strconv"
 	"strings"
+
+	"github.com/nllptr/aoc2022/util"
 )
 
-// func Run(filename string) (int, int) {
-// 	input := util.ReadFile(filename)
-// 	parsed := Parse(input)
-// 	return 0, 0
-// }
+func Run(filename string) (int, int) {
+	input := util.ReadFile(filename)
+	parsed := Parse(input)
+	fullyContained := countContainsTheOther(parsed)
+	overlaps := countHasOverlap(parsed)
+	return fullyContained, overlaps
+}
 
 type elfPair struct {
 	first  []int
@@ -33,15 +37,11 @@ func asElfPair(row string) elfPair {
 	if len(pair) != 2 {
 		log.Fatal("could not split row ", pair)
 	}
-	firstIndices := strings.Split(pair[0], "-")
-	if len(firstIndices) != 2 {
-		log.Fatal("could not split first indices")
-	}
-	secondIndices := strings.Split(pair[1], "-")
-	if len(secondIndices) != 2 {
-		log.Fatal("could not split second indices")
-	}
-	return elfPair{}
+	firstStart, firstEnd := splitToIndices(pair[0])
+	firstString := indicesToSlice(firstStart, firstEnd)
+	secondStart, secondEnd := splitToIndices(pair[1])
+	secondString := indicesToSlice(secondStart, secondEnd)
+	return elfPair{firstString, secondString}
 }
 
 func splitToIndices(indicesStr string) (int, int) {
@@ -62,4 +62,69 @@ func toInts(stringIndices []string) (int, int) {
 		log.Fatal("could not parse as int", secondIndex)
 	}
 	return firstIndex, secondIndex
+}
+
+func indicesToSlice(start, end int) []int {
+	result := []int{}
+	for i := start; i <= end; i++ {
+		result = append(result, i)
+	}
+	return result
+}
+
+func oneContainsTheOther(elfPair elfPair) bool {
+	if containsAll(elfPair.first, elfPair.second) {
+		return true
+	}
+	if containsAll(elfPair.second, elfPair.first) {
+		return true
+	}
+	return false
+}
+
+func containsAll(first, second []int) bool {
+	for _, v := range second {
+		if !contains(first, v) {
+			return false
+		}
+	}
+	return true
+}
+
+func contains(slice []int, value int) bool {
+	for _, v := range slice {
+		if v == value {
+			return true
+		}
+	}
+	return false
+}
+
+func countContainsTheOther(elfPairs []elfPair) int {
+	count := 0
+	for _, e := range elfPairs {
+		if oneContainsTheOther(e) {
+			count = count + 1
+		}
+	}
+	return count
+}
+
+func countHasOverlap(elfPairs []elfPair) int {
+	count := 0
+	for _, e := range elfPairs {
+		if hasOverlap(e) {
+			count = count + 1
+		}
+	}
+	return count
+}
+
+func hasOverlap(elfPair elfPair) bool {
+	for _, v := range elfPair.second {
+		if contains(elfPair.first, v) {
+			return true
+		}
+	}
+	return false
 }

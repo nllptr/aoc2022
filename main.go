@@ -6,6 +6,7 @@ import (
 	"github.com/nllptr/aoc2022/day1"
 	"github.com/nllptr/aoc2022/day2"
 	"github.com/nllptr/aoc2022/day3"
+	"github.com/nllptr/aoc2022/day4"
 )
 
 func main() {
@@ -18,4 +19,7 @@ func main() {
 	day3_1, day3_2 := day3.Run("day3/input.txt")
 	fmt.Println("day 3, part 1:", day3_1)
 	fmt.Println("day 3, part 2:", day3_2)
+	day4_1, day4_2 := day4.Run("day4/input.txt")
+	fmt.Println("day 4, part 1:", day4_1)
+	fmt.Println("day 4, part 2:", day4_2)
 }
