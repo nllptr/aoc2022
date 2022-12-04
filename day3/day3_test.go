@@ -6,7 +6,7 @@ import (
 	"github.com/stretchr/testify/assert"
 )
 
-func TestParseAsChoicepairInput(t *testing.T) {
+func TestParse(t *testing.T) {
 	var input = []byte("vJrwpWtwJgWrhcsFMMfFFhFp\njqHRNqRjqzjGDLGLrsFMfFZSrLrFZsSL\nPmmdzqPrVvPwwTWBwg")
 	expected := []rucksack{
 		{"vJrwpWtwJgWr", "hcsFMMfFFhFp"},
